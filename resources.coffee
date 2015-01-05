@@ -1,7 +1,7 @@
 _ = require 'lodash'
 module.exports = ->
   _.assign @,
-    apache_site: (name, [o]..., cb) =>
+    apache_site: (name, [o]...) => (cb) =>
       switch o?.action
         when 'enable'
           @template o.template,
@@ -17,7 +17,7 @@ module.exports = ->
         else
           @die "invalid action passed to @apache_site(): #{name}"
 
-    apache_module: (name, [o]..., cb) =>
+    apache_module: (name, [o]...) => (cb) =>
       switch o?.action
         when 'enable'
           @execute "a2enmod #{name}", sudo: true, cb
