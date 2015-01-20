@@ -15,7 +15,7 @@ module.exports = ->
         when 'disable'
           @execute "a2dissite #{name}", sudo: true, cb
         else
-          @die "invalid action passed to @apache_site(): #{name}"
+          @die("invalid action passed to @apache_site(): #{name}")() # immediate death
 
     apache_module: (name, [o]...) => (cb) =>
       switch o?.action
@@ -24,4 +24,4 @@ module.exports = ->
         when 'disable'
           @execute "a2dismod #{name}", sudo: true, cb
         else
-          @die "invalid action passed to @apache_module(): #{name}"
+          @die("invalid action passed to @apache_module(): #{name}")() # immediate death
