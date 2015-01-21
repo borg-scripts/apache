@@ -1,4 +1,3 @@
-_ = require 'lodash'
 module.exports = ->
   _.assign @,
     apache_site: (name, [o]...) => (cb) =>
