@@ -1,26 +1,25 @@
 module.exports = ->
   _.assign @,
-    apache_site: (name, [o]...) => (cb) =>
+    apache_site: (name, [o]...) => @inject_flow =>
       switch o?.action
         when 'enable'
-          @template o.template,
+          @then @template o.template,
             to: "/etc/apache2/sites-available/#{name}.conf"
             sudo: true
             owner: 'root'
             group: 'root'
             mode: '0755'
-            =>
-              @execute "a2ensite #{name}", sudo: true, cb
+          @then @execute "a2ensite #{name}", sudo: true
         when 'disable'
-          @execute "a2dissite #{name}", sudo: true, cb
+          @then @execute "a2dissite #{name}", sudo: true
         else
           @die("invalid action passed to @apache_site(): #{name}")() # immediate death
 
-    apache_module: (name, [o]...) => (cb) =>
+    apache_module: (name, [o]...) => @inject_flow =>
       switch o?.action
         when 'enable'
-          @execute "a2enmod #{name}", sudo: true, cb
+          @then @execute "a2enmod #{name}", sudo: true
         when 'disable'
-          @execute "a2dismod #{name}", sudo: true, cb
+          @then @execute "a2dismod #{name}", sudo: true
         else
-          @die("invalid action passed to @apache_module(): #{name}")() # immediate death
+          @then @die "invalid action passed to @apache_module(): #{name}" # immediate death
